@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aithon Solutions</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    h1 {
+      color: white;
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 1.8rem;
+    }
+    
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    
+    .card h2 {
+      color: #333;
+      margin-bottom: 15px;
+      font-size: 1.1rem;
+      border-bottom: 2px solid #667eea;
+      padding-bottom: 8px;
+    }
+    
+    .date-display {
+      text-align: center;
+      color: white;
+      font-size: 1.2rem;
+      margin-bottom: 15px;
+      opacity: 0.9;
+    }
+    
+    .input-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    
+    input[type="text"], input[type="date"] {
+      flex: 1;
+      padding: 12px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.2s;
+    }
+    
+    input:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+    
+    button {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: transform 0.1s, opacity 0.2s;
+    }
+    
+    button:hover {
+      opacity: 0.9;
+    }
+    
+    button:active {
+      transform: scale(0.98);
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+    
+    .btn-success {
+      background: #10b981;
+      color: white;
+    }
+    
+    .btn-danger {
+      background: #ef4444;
+      color: white;
+      padding: 8px 12px;
+      font-size: 0.85rem;
+    }
+    
+    .btn-secondary {
+      background: #6b7280;
+      color: white;
+      padding: 8px 12px;
+      font-size: 0.85rem;
+    }
+    
+    .person-list {
+      list-style: none;
+    }
+    
+    .person-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      background: #f9fafb;
+      transition: background 0.2s;
+    }
+    
+    .person-item.present {
+      background: #d1fae5;
+    }
+    
+    .person-item.absent {
+      background: #fee2e2;
+    }
+    
+    .person-name {
+      font-weight: 500;
+      flex: 1;
+    }
+    
+    .person-actions {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .status-badge {
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    
+    .status-present {
+      background: #10b981;
+      color: white;
+    }
+    
+    .status-absent {
+      background: #ef4444;
+      color: white;
+    }
+    
+    .history-item {
+      padding: 10px;
+      background: #f9fafb;
+      border-radius: 8px;
+      margin-bottom: 8px;
+    }
+    
+    .history-date {
+      font-weight: 600;
+      color: #667eea;
+      margin-bottom: 5px;
+    }
+    
+    .history-stats {
+      font-size: 0.9rem;
+      color: #6b7280;
+    }
+    
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    
+    .tab {
+      flex: 1;
+      padding: 10px;
+      text-align: center;
+      background: #e0e0e0;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    
+    .tab.active {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+    
+    .tab-content {
+      display: none;
+    }
+    
+    .tab-content.active {
+      display: block;
+    }
+    
+    .summary {
+      display: flex;
+      justify-content: space-around;
+      text-align: center;
+      padding: 15px 0;
+      border-top: 1px solid #e0e0e0;
+      margin-top: 15px;
+    }
+    
+    .summary-item span {
+      display: block;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #667eea;
+    }
+    
+    .summary-item small {
+      color: #6b7280;
+      font-size: 0.85rem;
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 30px;
+      color: #9ca3af;
+    }
+    
+    .mark-all-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    
+    .mark-all-row button {
+      flex: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📋 Attendance Tracker</h1>
+    <div class="date-display" id="currentDate"></div>
+    
+    <div class="card">
+      <div class="tabs">
+        <div class="tab active" data-tab="attendance">Mark Attendance</div>
+        <div class="tab" data-tab="roster">Manage Roster</div>
+        <div class="tab" data-tab="history">History</div>
+      </div>
+      
+      <!-- Attendance Tab -->
+      <div class="tab-content active" id="attendance">
+        <div class="mark-all-row">
+          <button class="btn-success" onclick="markAll(true)">✓ Mark All Present</button>
+          <button class="btn-danger" onclick="markAll(false)">✗ Mark All Absent</button>
+        </div>
+        
+        <ul class="person-list" id="attendanceList"></ul>
+        
+        <div class="summary" id="summary"></div>
+      </div>
+      
+      <!-- Roster Tab -->
+      <div class="tab-content" id="roster">
+        <div class="input-row">
+          <input type="text" id="newPerson" placeholder="Enter name..." onkeypress="if(event.key==='Enter')addPerson()">
+          <button class="btn-primary" onclick="addPerson()">Add</button>
+        </div>
+        <ul class="person-list" id="rosterList"></ul>
+      </div>
+      
+      <!-- History Tab -->
+      <div class="tab-content" id="history">
+        <div class="input-row">
+          <input type="date" id="historyDate" onchange="loadHistory()">
+        </div>
+        <div id="historyContent"></div>
+      </div>
+    </div>
+    
+    <div class="card">
+      <h2>💾 Data Management</h2>
+      <div class="input-row">
+        <button class="btn-primary" onclick="exportData()" style="flex:1">Export Data</button>
+        <button class="btn-secondary" onclick="document.getElementById('importFile').click()" style="flex:1">Import Data</button>
+        <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)">
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // State
+    let roster = JSON.parse(localStorage.getItem('roster')) || [];
+    let attendanceRecords = JSON.parse(localStorage.getItem('attendance')) || {};
+    
+    const today = new Date().toISOString().split('T')[0];
+    
+    // Initialize
+    document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', { 
+      weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' 
+    });
+    document.getElementById('historyDate').value = today;
+    
+    // Tab switching
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById(tab.dataset.tab).classList.add('active');
+      });
+    });
+    
+    // Save functions
+    function saveRoster() {
+      localStorage.setItem('roster', JSON.stringify(roster));
+    }
+    
+    function saveAttendance() {
+      localStorage.setItem('attendance', JSON.stringify(attendanceRecords));
+    }
+    
+    // Roster management
+    function addPerson() {
+      const input = document.getElementById('newPerson');
+      const name = input.value.trim();
+      if (name && !roster.includes(name)) {
+        roster.push(name);
+        roster.sort();
+        saveRoster();
+        renderRoster();
+        renderAttendance();
+        input.value = '';
+      }
+    }
+    
+    function removePerson(name) {
+      if (confirm(`Remove ${name} from roster?`)) {
+        roster = roster.filter(p => p !== name);
+        saveRoster();
+        renderRoster();
+        renderAttendance();
+      }
+    }
+    
+    function renderRoster() {
+      const list = document.getElementById('rosterList');
+      if (roster.length === 0) {
+        list.innerHTML = '<div class="empty-state">No people added yet.<br>Add someone above!</div>';
+        return;
+      }
+      list.innerHTML = roster.map(name => `
+        <li class="person-item">
+          <span class="person-name">${name}</span>
+          <button class="btn-danger" onclick="removePerson('${name}')">Remove</button>
+        </li>
+      `).join('');
+    }
+    
+    // Attendance management
+    function getTodayAttendance() {
+      if (!attendanceRecords[today]) {
+        attendanceRecords[today] = {};
+      }
+      return attendanceRecords[today];
+    }
+    
+    function toggleAttendance(name) {
+      const todayRecord = getTodayAttendance();
+      todayRecord[name] = !todayRecord[name];
+      saveAttendance();
+      renderAttendance();
+    }
+    
+    function markAll(present) {
+      const todayRecord = getTodayAttendance();
+      roster.forEach(name => {
+        todayRecord[name] = present;
+      });
+      saveAttendance();
+      renderAttendance();
+    }
+    
+    function renderAttendance() {
+      const list = document.getElementById('attendanceList');
+      const todayRecord = getTodayAttendance();
+      
+      if (roster.length === 0) {
+        list.innerHTML = '<div class="empty-state">No people in roster.<br>Go to "Manage Roster" to add people.</div>';
+        document.getElementById('summary').innerHTML = '';
+        return;
+      }
+      
+      list.innerHTML = roster.map(name => {
+        const isPresent = todayRecord[name] === true;
+        const isAbsent = todayRecord[name] === false;
+        const statusClass = isPresent ? 'present' : (isAbsent ? 'absent' : '');
+        const badge = isPresent 
+          ? '<span class="status-badge status-present">Present</span>'
+          : (isAbsent ? '<span class="status-badge status-absent">Absent</span>' : '');
+        
+        return `
+          <li class="person-item ${statusClass}">
+            <span class="person-name">${name}</span>
+            <div class="person-actions">
+              ${badge}
+              <button class="btn-success" onclick="markPresent('${name}')" ${isPresent ? 'disabled' : ''}>✓</button>
+              <button class="btn-danger" onclick="markAbsent('${name}')" ${isAbsent ? 'disabled' : ''}>✗</button>
+            </div>
+          </li>
+        `;
+      }).join('');
+      
+      // Summary
+      const present = roster.filter(n => todayRecord[n] === true).length;
+      const absent = roster.filter(n => todayRecord[n] === false).length;
+      const unmarked = roster.length - present - absent;
+      
+      document.getElementById('summary').innerHTML = `
+        <div class="summary-item"><span>${present}</span><small>Present</small></div>
+        <div class="summary-item"><span>${absent}</span><small>Absent</small></div>
+        <div class="summary-item"><span>${unmarked}</span><small>Unmarked</small></div>
+        <div class="summary-item"><span>${roster.length > 0 ? Math.round(present/roster.length*100) : 0}%</span><small>Rate</small></div>
+      `;
+    }
+    
+    function markPresent(name) {
+      getTodayAttendance()[name] = true;
+      saveAttendance();
+      renderAttendance();
+    }
+    
+    function markAbsent(name) {
+      getTodayAttendance()[name] = false;
+      saveAttendance();
+      renderAttendance();
+    }
+    
+    // History
+    function loadHistory() {
+      const date = document.getElementById('historyDate').value;
+      const content = document.getElementById('historyContent');
+      const record = attendanceRecords[date];
+      
+      if (!record || Object.keys(record).length === 0) {
+        content.innerHTML = '<div class="empty-state">No attendance recorded for this date.</div>';
+        return;
+      }
+      
+      const present = Object.entries(record).filter(([_, v]) => v === true);
+      const absent = Object.entries(record).filter(([_, v]) => v === false);
+      
+      content.innerHTML = `
+        <div class="history-item">
+          <div class="history-date">${new Date(date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</div>
+          <div class="history-stats">
+            <strong>Present (${present.length}):</strong> ${present.map(([n]) => n).join(', ') || 'None'}<br>
+            <strong>Absent (${absent.length}):</strong> ${absent.map(([n]) => n).join(', ') || 'None'}
+          </div>
+        </div>
+      `;
+    }
+    
+    // Export/Import
+    function exportData() {
+      const data = { roster, attendance: attendanceRecords };
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `attendance-backup-${today}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+    
+    function importData(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const data = JSON.parse(e.target.result);
+          if (data.roster) roster = data.roster;
+          if (data.attendance) attendanceRecords = data.attendance;
+          saveRoster();
+          saveAttendance();
+          renderRoster();
+          renderAttendance();
+          alert('Data imported successfully!');
+        } catch (err) {
+          alert('Invalid file format');
+        }
+      };
+      reader.readAsText(file);
+    }
+    
+    // Initial render
+    renderRoster();
+    renderAttendance();
+    loadHistory();
+  </script>
+</body>
+</html>
